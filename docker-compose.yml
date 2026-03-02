@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  adatbazis:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: titkos_jelszo
+      MYSQL_DATABASE: wp_adatbazis
+    volumes:
+      - db_adatok:/var/lib/mysql
+
+  weboldal:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: adatbazis
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: titkos_jelszo
+      WORDPRESS_DB_NAME: wp_adatbazis
+    depends_on:
+      - adatbazis
+
+volumes:
+  db_adatok:
